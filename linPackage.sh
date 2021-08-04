@@ -1,0 +1,1 @@
+/usr/java/jdk-14.0.2/bin/jpackage --name TinyApp --input /home/Summer/git/com.gogeophysical.app.tinyApp/target  --main-jar tinyApp-1.0.jar --dest /home/Summer/git/com.gogeophysical.app.tinyApp --app-version 1.0.2 --icon /home/Summer/git/com.gogeophysical.app.tinyApp/src/main/resources/iconsTiny/icons8-roach-96.png --linux-shortcut 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+	<Properties>
+		<Property name="LS">${sys:file.separator}</Property>
+		<Property name="USERHOME">${sys:user.home}</Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d %-5level %30c{3}: %M  %msg%n" />
+		</Console>
+
+		<RollingFile name="FileOut"
+			filename="${USERHOME}${LS}tinyApp.log"
+			filePattern="${USERHOME}${LS}tinyApp$.log"
+			immediateFlush="true">
+			<PatternLayout pattern="%d %-5level %30c{2}:  %msg%n" />
+			<Policies>
+				<OnStartupTriggeringPolicy />
+			</Policies>
+		</RollingFile> 
+	</Appenders>
+	<Loggers>
+		<root level="TRACE">
+			<appenderRef ref="Console" level="DEBUG" />
+			<appenderRef ref="FileOut" level="INFO" /> 
+		</root>
+	</Loggers>
+</Configuration>

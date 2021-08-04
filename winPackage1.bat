@@ -1,0 +1,1 @@
+"C:\Users\summe\jdk\jdk-14\bin\jpackage.exe" --name tinyApp --input C:\Users\summe\git\com.gogeophysical.app.tinyApp\target   --main-jar tinyApp-1.0.jar  --dest C:\Users\summe\git\com.gogeophysical.app.tinyApp  --app-version 1.0 --icon C:\Users\summe\git\com.gogeophysical.app.tinyApp\src\main\resources\icons\icons8-roach-96.ico --win-shortcut
