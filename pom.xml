@@ -1,21 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
-  	<parent>
-		<groupId>com.gogeophysical.app</groupId>
-		<artifactId>aggApps</artifactId>
-		<version>1.0</version>
-	</parent>
-	
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <artifactId>tinyApp</artifactId>
-  <version>1.0</version>
-  <name>TinyApp</name>
-  <description>Tiny App for Testing Packaging and Licensing</description>
-  
-  
-  
-  <properties>
+	<!-- <parent> -->
+	<!-- <artifactId>aggApps</artifactId> -->
+	<!-- <version>1.0</version> -->
+	<!-- </parent> -->
+
+	<groupId>com.gogeophysical.app</groupId>
+	<artifactId>tinyApp</artifactId>
+	<version>1.1</version>
+	<name>TinyApp</name>
+	<description>Tiny App for Testing Packaging and Licensing</description>
+
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<mainClass>com.gogeophysical.tiny.app.Launcher</mainClass>
 		<maven.compiler.source>14</maven.compiler.source>
@@ -24,9 +23,19 @@
 		<downloadJavadocs>true</downloadJavadocs>
 	</properties>
 
-	<dependencies>	
+	<dependencies>
+		<dependency>
+			<groupId>com.gogeophysical</groupId>
+			<artifactId>appBase</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>com.gogeophysical</groupId> -->
+		<!-- <artifactId>log4j</artifactId> -->
+		<!-- <version>1.0</version> -->
+		<!-- </dependency> -->
 	</dependencies>
-	
+
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
@@ -49,15 +58,17 @@
 				<configuration>
 					<archive>
 						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<mainClass>${mainClass}</mainClass>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
+
 							<!-- <manifestEntries> -->
 							<!-- <SplashScreen-Image>icon/COLOG_logo_white_small_square.png</SplashScreen-Image> -->
 							<!-- </manifestEntries> -->
 						</manifest>
 						<manifestEntries>
-							<SplashScreen-Image>icon/icons8-roach-96.png</SplashScreen-Image>
+							<SplashScreen-Image>iconsTiny/icons8-roach-96.png</SplashScreen-Image>
 						</manifestEntries>
 					</archive>
 					<!-- <outputDirectory>${project.build.directory}/app</outputDirectory> -->
@@ -91,5 +102,5 @@
 
 		</plugins>
 	</build>
-  
+
 </project>

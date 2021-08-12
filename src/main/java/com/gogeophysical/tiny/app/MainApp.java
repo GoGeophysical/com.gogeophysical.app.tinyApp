@@ -10,13 +10,19 @@ import org.apache.logging.log4j.Logger;
 import com.gogeophysical.appToolControl.AppToolController;
 import com.gogeophysical.appToolControl.MyAppToolConfig;
 import com.gogeophysical.javaPreferences.PrefManager;
+import com.gogeophysical.licenseDesktop.LicRegManager;
 import com.gogeophysical.licenseDesktop.LicenseUICore;
 import com.gogeophysical.tiny.api.SysLogTool;
 
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
@@ -32,7 +38,7 @@ public class MainApp extends Application {
 
 	public ResourceBundle words;
 
-	public PrefManager prefs = new PrefManager(MainApp.class);
+	public PrefManager prefs;
 	public Stage primaryStage;
 
 	public enum Apps {LOG};
@@ -40,9 +46,11 @@ public class MainApp extends Application {
 	public Image fishIcon = new Image(getClass().getResourceAsStream("/iconsTiny/icons8-roach-96.png"));
 	public Image logIcon = new Image(getClass().getResourceAsStream("/iconsTiny/icons8-activity-history-32.png"));
 
+	private LicRegManager licRegManager;
 
 	@Override
 	public void init() {
+		prefs = new PrefManager(MainApp.class);
 
 		AppToolController.checkInstance(appPort); // this will cause systen exit if app already running.
 
@@ -65,6 +73,9 @@ public class MainApp extends Application {
 
 			control = new AppToolController(this, config);
 
+			
+			//customEditsToBorderPane();
+			
 			log.info("Done Initializing Main App");
 
 		} catch (Exception e) {
@@ -110,8 +121,8 @@ public class MainApp extends Application {
 
 			//customEditsToBorderPane();
 
-			control.hideToolBar();
-			control.showToolBar(); 
+			//control.hideToolBar();
+			//control.showToolBar(); 
 			
 			finishLoading();
 			//control.showApp(Apps.STAT.toString());
@@ -124,20 +135,38 @@ public class MainApp extends Application {
 
 		control.hideToolBar();
 		control.hideLeft(true);
+		control.hideLeftHideButton();
+		control.hideUnDockButton();	
+		control.hidePDFButton();
+		control.hidePNGButton();
+		control.hideRightHideButton();
+
 		Runnable success  = () -> {
-			control.hideLeftHideButton();
-			control.hideUnDockButton();	
-			control.hidePDFButton();
-			control.hidePNGButton();
+//			control.hideLeftHideButton();
+//			control.hideUnDockButton();	
+//			control.hidePDFButton();
+//			control.hidePNGButton();
 			control.showToolBar(); 
-			control.hideRightHideButton();
+			//control.hideRightHideButton();
 			control.hideLeft(false);
+			customEditsToBorderPane();
 			control.showApp(Apps.LOG.toString());
 		};
-		Runnable failure  = () -> {};
+		Runnable failure  = () -> {
+			control.showApp(null);
+
+			customEditsToBorderPaneSimple();
+			//licRegManager.showLicRegPopUp();
+		};
 
 		try {
-			LicenseUICore.runLicRegCheck(primaryStage, prefs, appName, appOfficial, success, failure);
+			
+			Boolean logMode = true;
+			Boolean runLocal=false;
+
+			licRegManager = new LicRegManager(this, primaryStage, prefs, appName, appOfficial, success, failure,logMode, runLocal);
+			licRegManager.check();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -167,4 +196,46 @@ public class MainApp extends Application {
 			Platform.runLater(runnable);
 		}
 	}
+	
+	public void customEditsToBorderPaneSimple() {
+		// customize top with and extra menubar
+		//Menu tools = control.getToolsDropDownMenu();
+		Menu lic  =  licRegManager.getLicMenu() ;
+		MenuBar mainMenuBar = new MenuBar(lic);
+
+//		VBox vbox = new VBox();
+//		vbox.getChildren().addAll(mainMenuBar);
+		control.topNode = mainMenuBar;
+		control.getBorderPane().setTop(mainMenuBar);
+
+		//control
+//		control.hideToolBar();
+
+		//control.leftNode = tabPaneLeft;
+		//control.getBorderPane().setLeft(tabPaneLeft);
+
+		// make custom bottom line
+		//control.getBorderPane().setBottom(new Label("Status: good"));
+	}
+	
+	public void customEditsToBorderPane() {
+		// customize top with and extra menubar
+		Menu tools = control.getToolsDropDownMenu();
+		Menu lic  =  licRegManager.getLicMenu() ;
+		MenuBar mainMenuBar = new MenuBar(tools, lic);
+
+		VBox vbox = new VBox();
+		vbox.getChildren().addAll(mainMenuBar);
+		control.topNode = vbox;
+		control.getBorderPane().setTop(vbox);
+
+//		control.hideToolBar();
+
+		//control.leftNode = tabPaneLeft;
+		//control.getBorderPane().setLeft(tabPaneLeft);
+
+		// make custom bottom line
+		//control.getBorderPane().setBottom(new Label("Status: good"));
+	}
+	
 }
