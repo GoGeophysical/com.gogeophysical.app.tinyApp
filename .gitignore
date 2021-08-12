@@ -1,3 +1,6 @@
 target*
 org.eclipse*
 *.rpm
+*pid*.log
+.project
+
