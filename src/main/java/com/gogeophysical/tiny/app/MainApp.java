@@ -51,18 +51,21 @@ public class MainApp extends Application {
 	@Override
 	public void init() {
 		prefs = new PrefManager(MainApp.class);
-
 		AppToolController.checkInstance(appPort); // this will cause systen exit if app already running.
 
 		// wait to call logger so it doesn't overwrite the one if already running
 		log = LogManager.getLogger();
-		log.info("init");
+		
+		
+		log.info("init done");
 	}
 	
 	private void reInit() {
 		log.info("Initializing Main App");
 		try {
+			
 			prefs.addDefaultString("language", "en");
+
 
 			MyAppToolConfig config = new MyAppToolConfig(); // this file is the configuration.  COuld make xml?
 
